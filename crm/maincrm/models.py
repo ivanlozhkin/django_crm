@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 
@@ -42,14 +44,12 @@ class Customer(models.Model):
 
 
 class Order(models.Model):
-    # id = models.PrimaryKey()
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     customer = models.ForeignKey(Customer, related_name='order', on_delete=models.CASCADE, null=True)
     type_of_work = models.ForeignKey(TypeOfWork, related_name='order_type', on_delete=models.CASCADE, null=True)
-    description = models.TextField(max_length=500)
-    status = models.ForeignKey(StatusOrder,related_name='order_status', on_delete=models.CASCADE, null=True)
+    description = models.TextField(max_length=1000)
+    status = models.ForeignKey(StatusOrder, related_name='order_status', on_delete=models.CASCADE, null=True)
     price = models.IntegerField()
 
     def __str__(self):
-        return self.customer
-
-
+        return str(self.id)
